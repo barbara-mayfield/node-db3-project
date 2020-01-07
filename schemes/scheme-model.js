@@ -17,16 +17,17 @@ function findSteps(id) {
         .select("st.id", "sc.scheme_name", "st.step_number", "st.instructions")
 }
 
-function add() {
-    
+async function add(schemeData) {
+    const [id] = await db("schemes").insert(schemeData)
+	return db("schemes").where({ id }).first()
 }
 
 function update() {
     
 }
 
-function remove() {
-    
+function remove(id) {
+    return db('schemes').where({ id }).del();
 }
 
 module.exports = {
