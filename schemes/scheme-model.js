@@ -10,20 +10,16 @@ function findById(id) {
         .first()
 }
 
-function findSteps(id) {
-    return db("schemes as sc") 
-        .join("steps as st", "sc.id", "st.scheme_id")
-        .where({ scheme_id: id })
-        .select("st.id", "sc.scheme_name", "st.step_number", "st.instructions")
-}
-
 async function add(schemeData) {
     const [id] = await db("schemes").insert(schemeData)
 	return db("schemes").where({ id }).first()
 }
 
-function update() {
-    
+function update(id, changes) {
+    db("schemes").where({id}).update(changes)
+    .then((scheme) => {
+        return findById(scheme)
+    })
 }
 
 function remove(id) {
@@ -33,7 +29,6 @@ function remove(id) {
 module.exports = {
     find,
     findById,
-    findSteps,
     add,
     update,
     remove
